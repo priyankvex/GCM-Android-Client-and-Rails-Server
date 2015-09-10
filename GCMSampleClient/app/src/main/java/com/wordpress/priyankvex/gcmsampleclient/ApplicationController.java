@@ -15,7 +15,7 @@ public class ApplicationController extends Application {
 
     private RequestQueue mRequestQueue;
 
-    private String TAG = getPackageName();
+    private String TAG = "GCM Sample Client";
 
     private static ApplicationController mInstance;
 
