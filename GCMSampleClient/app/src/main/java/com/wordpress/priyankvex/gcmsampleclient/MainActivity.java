@@ -6,6 +6,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.wordpress.priyankvex.gcmsampleclient.services.RegistrationAsyncTask;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -25,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Start the service to get the token and send it to app server.
-
+                new RegistrationAsyncTask(MainActivity.this).execute();
             }
         });
     }
@@ -33,5 +35,9 @@ public class MainActivity extends AppCompatActivity {
     private void findViewsById(){
         buttonRegister = (Button) findViewById(R.id.button);
         textViewMessage = (TextView) findViewById(R.id.textView);
+    }
+
+    public void updateMessage(String message){
+        textViewMessage.setText(message);
     }
 }
