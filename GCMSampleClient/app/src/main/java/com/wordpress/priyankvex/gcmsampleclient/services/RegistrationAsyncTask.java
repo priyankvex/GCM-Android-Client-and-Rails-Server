@@ -26,15 +26,18 @@ public class RegistrationAsyncTask extends AsyncTask<Void, Void, Void>{
 
     public RegistrationAsyncTask(Activity activity){
         mActivity = activity;
-        mProgressDialog = new ProgressDialog(activity);
-        mProgressDialog.setMessage("Registering...");
-        mProgressDialog.setCancelable(false);
+        if (activity != null){
+            mProgressDialog = new ProgressDialog(activity);
+            mProgressDialog.setMessage("Registering...");
+            mProgressDialog.setCancelable(false);
+        }
+
     }
 
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        mProgressDialog.show();
+        if (mProgressDialog != null) mProgressDialog.show();
     }
 
     @Override
@@ -43,14 +46,11 @@ public class RegistrationAsyncTask extends AsyncTask<Void, Void, Void>{
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(mActivity);
 
         try {
-            // [START register_for_gcm]
-            // Initially this call goes out to the network to retrieve the token, subsequent calls
-            // are local.
-            // [START get_token]
+            // Get the token from GCM server.
             InstanceID instanceID = InstanceID.getInstance(mActivity);
             token = instanceID.getToken(mActivity.getString(R.string.gcm_sender_id),
                     GoogleCloudMessaging.INSTANCE_ID_SCOPE, null);
-            // [END get_token]
+
             Log.i("test", "GCM Registration Token: " + token);
 
             // TODO: Implement this method to send any registration to your app's servers.
@@ -58,7 +58,7 @@ public class RegistrationAsyncTask extends AsyncTask<Void, Void, Void>{
 
             // Storing that the token has already been sent.
             sharedPreferences.edit().putBoolean(Config.KEY_TOKEN_SENT_TO_SEVER, true).apply();
-            // [END register_for_gcm]
+
         } catch (Exception e) {
             Log.d("test", "Failed to complete token refresh", e);
             // If an exception happens while fetching the new token or updating our registration data
@@ -72,7 +72,7 @@ public class RegistrationAsyncTask extends AsyncTask<Void, Void, Void>{
     @Override
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
-        mProgressDialog.dismiss();
+        if (mProgressDialog != null) mProgressDialog.dismiss();
         ((MainActivity)mActivity).updateMessage("Device Token : " + token);
     }
 }
