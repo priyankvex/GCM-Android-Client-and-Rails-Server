@@ -7,13 +7,19 @@ import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.android.gms.iid.InstanceID;
+import com.wordpress.priyankvex.gcmsampleclient.ApplicationController;
 import com.wordpress.priyankvex.gcmsampleclient.Config;
 import com.wordpress.priyankvex.gcmsampleclient.MainActivity;
 import com.wordpress.priyankvex.gcmsampleclient.R;
 
-import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by Priyank(@priyankvex) on 9/9/15.
@@ -55,8 +61,7 @@ public class RegistrationAsyncTask extends AsyncTask<Void, Void, Void>{
 
             Log.i("test", "GCM Registration Token: " + token);
 
-            // TODO: Implement this method to send any registration to your app's servers.
-            //sendRegistrationToServer(token);
+            sendTokenToServer();
 
             // Storing that the token has already been sent.
             sharedPreferences.edit().putBoolean(Config.KEY_TOKEN_SENT_TO_SEVER, true).apply();
@@ -78,6 +83,31 @@ public class RegistrationAsyncTask extends AsyncTask<Void, Void, Void>{
         ((MainActivity)mActivity).updateMessage("Device Token : " + token);
     }
 
+
+    private void sendTokenToServer(){
+
+        StringRequest request = new StringRequest(Request.Method.POST,Config.APPLICATION_SERVER_URL,
+                new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                // Show error toast here.
+            }
+        }){
+            @Override
+            protected Map<String,String> getParams(){
+                Map<String,String> params = new HashMap<String, String>();
+                params.put("token", token);
+                return params;
+            }
+        };
+
+        ApplicationController.getInstance().addToRequestQueue(request);
+    }
 
 
 }

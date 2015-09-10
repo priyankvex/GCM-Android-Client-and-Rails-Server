@@ -6,4 +6,5 @@ package com.wordpress.priyankvex.gcmsampleclient;
 public class Config {
 
     public static String KEY_TOKEN_SENT_TO_SEVER = "tokenSentToServer";
+    public static String APPLICATION_SERVER_URL = "";
 }
