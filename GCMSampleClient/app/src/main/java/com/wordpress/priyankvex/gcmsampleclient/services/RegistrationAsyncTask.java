@@ -71,6 +71,7 @@ public class RegistrationAsyncTask extends AsyncTask<Void, Void, Void>{
             // If an exception happens while fetching the new token or updating our registration data
             // on a third-party server, this ensures that we'll attempt the update at a later time.
             sharedPreferences.edit().putBoolean(Config.KEY_TOKEN_SENT_TO_SEVER, false).apply();
+            ((MainActivity)mActivity).updateMessage("Failed to complete token refresh");
         }
 
         return null;
