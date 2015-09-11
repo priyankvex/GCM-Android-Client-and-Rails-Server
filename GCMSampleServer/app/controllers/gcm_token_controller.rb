@@ -11,4 +11,5 @@ class GcmTokenController < ApplicationController
 	response = gcm.send(registration_ids, options)
 
   end
+  
 end
