@@ -12,7 +12,7 @@ class MessageControllerController < ApplicationController
   		end
   		# We got the tokens array. Now send GCM message to these tokens.
   		gcm = GCM.new("AIzaSyAzna2zpNnAgiSHvVSM2ZsjYx_wpEhzq10")
-		options = {data: {score: message}, collapse_key: "updated_score"}
+		options = {data: {message: message}, collapse_key: "updated_score"}
 		response = gcm.send(tokens_array, options)
   	else
   		puts "GET received!"
