@@ -26,7 +26,7 @@ import java.util.Map;
  *
  * Async Task to get the token from GCM server and send it to the application server.
  */
-public class RegistrationAsyncTask extends AsyncTask<Void, Void, Void>{
+public class RegistrationAsyncTask extends AsyncTask<String, Void, Void>{
 
     Activity mActivity;
     ProgressDialog mProgressDialog;
@@ -49,14 +49,16 @@ public class RegistrationAsyncTask extends AsyncTask<Void, Void, Void>{
     }
 
     @Override
-    protected Void doInBackground(Void... params) {
+    protected Void doInBackground(String... params) {
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(mActivity);
+        String senderId = params[0];
+        Log.d("test", "sender id : " + senderId);
 
         try {
             // Get the token from GCM server.
             InstanceID instanceID = InstanceID.getInstance(mActivity);
-            token = instanceID.getToken(mActivity.getString(R.string.gcm_sender_id),
+            token = instanceID.getToken(senderId,
                     GoogleCloudMessaging.INSTANCE_ID_SCOPE, null);
 
             Log.i("test", "GCM Registration Token: " + token);
